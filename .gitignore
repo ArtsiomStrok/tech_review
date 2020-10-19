@@ -1,3 +1,7 @@
 .DS_Store
 .DS_Store?
 .ipynb_checkpoints
+classifiers
+stanford-ner-4.0.0.jar
+services.json
+.idea
