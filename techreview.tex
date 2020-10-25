@@ -7,6 +7,8 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
+\usepackage[boldmath]{numprint}
+\usepackage{moreverb}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
@@ -28,8 +30,7 @@ Resume, NER, SpaCy, NLTK, Stanford NER Tagger, Google Cloud Natural Language API
 \end{IEEEkeywords}
 
 \section{Introduction}
-This document is a model and instructions for \LaTeX.
-Please observe the conference page limits. 
+This section has short overview of each of the NLP tool with additional details regarding supported languages, named entity types, example of API, support of custom NER model training and additional notes.
 
 \subsection{SpaCy}
 
@@ -37,30 +38,375 @@ SpaCy\footnote{https://en.wikipedia.org/wiki/SpaCy} is an open-source software l
 
 Unlike NLTK, which is widely used for teaching and research, spaCy focuses on providing software for production usage. As of version 1.0, spaCy also supports deep learning workflows that allow connecting statistical models trained by popular machine learning libraries like TensorFlow, PyTorch or MXNet through its own machine learning library Thinc. Using Thinc as its backend, spaCy features convolutional neural network models for part-of-speech tagging, dependency parsing, text categorization and named entity recognition (NER). Prebuilt statistical neural network models to perform these task are available for English, German, Greek, Spanish, Portuguese, French, Italian, Dutch, Lithuanian and Norwegian, and there is also a multi-language NER model. Additional support for tokenization for more than 50 languages allows users to train custom models on their own datasets as well
 
+Supported NER categories
+
+\begin{itemize}
+	\item CARDINAL
+	\item DATE
+	\item EVENT
+	\item FAC
+	\item GPE
+	\item LANGUAGE
+	\item LAW
+	\item LOC
+	\item MONEY
+	\item NORP
+	\item ORDINAL
+	\item ORG
+	\item PERCENT
+	\item PERSON
+	\item PRODUCT
+	\item QUANTITY
+	\item TIME
+	\item WORK\_OF\_ ART
+\end{itemize}
+
+Supported Languages
+
+\begin{itemize}
+	\item English
+	\item Chinese
+	\item Danish
+	\item Dutch
+	\item French
+	\item German
+	\item Greek
+	\item Italian
+	\item Japanese
+	\item Lithuanian
+	\item Norwegian Bokmål
+	\item Polish
+	\item Portuguese
+	\item Romanian
+	\item Spanish
+\end{itemize}
+
+Support of custom NER
+
+SpaCy has step by step guide how to improve existing model by adding your data and how to train the model for the new entity type.
+
+Example of API:
+
+\begin{verbatimtab}[4]
+nlp = spacy.load("en_core_web_lg")tokenized_text = word_tokenize(doc)
+classified_doc = nlp(doc)
+\end{verbatimtab}
+
+Other notes
+
+'O' class automatically filtered. The begin and end position of named entity is available.
+
 \subsection{Stanford NER}
 
 Stanford NER\footnote{https://nlp.stanford.edu/software/CRF-NER.html}  is a Java implementation of a Named Entity Recognizer. Named Entity Recognition (NER) labels sequences of words in a text which are the names of things, such as person and company names, or gene and protein names. It comes with well-engineered feature extractors for Named Entity Recognition, and many options for defining feature extractors. Included with the download are good named entity recognizers for English, particularly for the 3 classes (PERSON, ORGANIZATION, LOCATION), and we also make available on this page various other models for different languages and circumstances, including models trained on just the CoNLL 2003 English training data.
 
 Stanford NER is also known as CRFClassifier. The software provides a general implementation of (arbitrary order) linear chain Conditional Random Field (CRF) sequence models. That is, by training your own models on labeled data, you can actually use this code to build sequence models for NER or any other task. (CRF models were pioneered by Lafferty, McCallum, and Pereira (2001); see Sutton and McCallum (2006) or Sutton and McCallum (2010) for more comprehensible introductions.)
 
+Supported NER categories
+
+\begin{itemize}
+	\item Location
+	\item Person
+	\item Organization
+	\item Money
+	\item Percent
+	\item Date
+	\item Time
+\end{itemize}
+
+Supported Languages
+
+\begin{itemize}
+	\item English
+	\item Arabic
+	\item Chinese
+	\item French
+	\item German
+	\item Spanish
+\end{itemize}
+
+Support of custom NER
+
+The documentation for training your own classifier is somewhere between bad and non-existent. But nevertheless, everything you need is in the box, and you should look through the Javadoc for at least the classes CRFClassifier and NERFeatureFactory.
+
+Example of API:
+
+\begin{verbatimtab}[4]
+st = StanfordNERTagger(
+		'english.all.3class.distsim.crf.ser.gz', 
+		'stanford-ner-4.0.0.jar',
+		encoding='utf-8')
+tokenized_doc = word_tokenize(doc)
+classified_doc = st.tag(tokenized_doc)
+\end{verbatimtab}
+
+Other notes
+
+The result is list of tuples for each token without scores. There is no out of the box chunking.
+
 \subsection{Google Cloud Natural Language API}
 
 The Cloud Natural Language API\footnote{https://cloud.google.com/natural-language/docs}  provides natural language understanding technologies to developers, including sentiment analysis, entity analysis, entity sentiment analysis, content classification, and syntax analysis. This API is part of the larger Cloud Machine Learning API family.
 
+Supported NER categories
+
+\begin{itemize}
+	\item UNKNOWN
+	\item PERSON
+	\item LOCATION
+	\item ORGANIZATION
+	\item EVENT
+	\item WORK\_OF\_ART
+	\item CONSUMER\_GOOD
+	\item OTHER
+	\item PHONE\_NUMBER
+	\item Phone
+	\item ADDRESS
+	\item DATE
+	\item NUMBER
+	\item PRICE
+\end{itemize}
+
+Supported Languages
+
+\begin{itemize}
+	\item English
+	\item Chinese (Simplified)
+	\item Chinese (Traditional)
+	\item French
+	\item German
+	\item Italian
+	\item Japanese
+	\item Korean
+	\item Portuguese (Brazilian \& Continental)
+	\item Russian
+	\item Spanish
+\end{itemize}
+
+Support of custom NER
+
+Google has AutoML Natural Language which allows end user to train custom NER model.
+
+Example of API:
+
+\begin{verbatimtab}[4]
+client = language.LanguageServiceClient
+	.from_service_account_json('services.json')
+doc = types.Document(content=text, 
+	type=language.enums.Document.Type.PLAIN_TEXT)
+features = {'extract_syntax': False, 
+	'extract_entities': True, 
+	'extract_document_sentiment': False, 
+	'extract_entity_sentiment': False,
+	'classify_text': False}
+response = client.annotate_text(doc, features)
+entities = response.entities
+\end{verbatimtab}
+
+Other notes
+
+Credentials can be easily exported from the web interface and imported to the client using JSON file. There is limitation on request size. 
+
 \subsection{Amazon Comprehend Text Analysis API}
 
 Amazon Comprehend\footnote{https://docs.aws.amazon.com/comprehend/latest/dg/what-is.html} uses natural language processing (NLP) to extract insights about the content of documents. Amazon Comprehend processes any text file in UTF-8 format. It develops insights by recognizing the entities, key phrases, language, sentiments, and other common elements in a document. Use Amazon Comprehend to create new products based on understanding the structure of documents. For example, using Amazon Comprehend you can search social networking feeds for mentions of products or scan an entire document repository for key phrases.
+
+Supported NER categories
+
+\begin{itemize}
+	\item COMMERCIAL\_ITEM
+	\item DATE
+	\item EVENT
+	\item LOCATION
+	\item ORGANIZATION
+	\item OTHER
+	\item PERSON
+	\item QUANTITY
+	\item TITLE
+\end{itemize}
+
+Supported Languages
+
+\begin{itemize}
+	\item English
+	\item German
+	\item Spanish
+	\item Italian
+	\item Portuguese
+	\item French
+	\item Japanese
+	\item Korean
+	\item Hindi
+	\item Arabic
+	\item Chinese (simplified)
+	\item Chinese (traditional)
+\end{itemize}
+
+Support of custom NER
+
+Amazon has Comprehend's custom entity recognition service to train custom NER model which is AutoML service similar to Google. The service automatically tests for the best algorithm and parameters while training the model to use, looking for the most accurate combination of these components.
+
+Example of API:
+
+\begin{verbatimtab}[4]
+comprehend = boto3.client(
+	service_name='comprehend')
+comprehend.detect_entities(Text=documents, 
+	LanguageCode='en')
+\end{verbatimtab}
+
+Other notes
+
+Comprehend client is automatically looking credentials  in the environment variables. There is a 5000 bytes limitation on request size.  API supports both single document and batch modes.
 
 \subsection{Microsoft Azure Text Analytics API}
 
 The Text Analytics API\footnote{https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview} is a cloud-based service that provides Natural Language Processing (NLP) features for text mining and text analysis, including: sentiment analysis, opinion mining, key phrase extraction, language detection, and named entity recognition.
 The API is a part of Azure Cognitive Services, a collection of machine learning and AI algorithms in the cloud for your development projects. You can use these features with the REST API, or the client library.
 
+Supported NER categories
+
+\begin{itemize}
+	\item Person
+	\item PersonType
+	\item Location
+	\item Organization
+	\item Event
+	\item Product
+	\item Skill
+	\item Address
+	\item PhoneNumber
+	\item Email
+	\item URL
+	\item IP
+	\item DateTime
+	\item Quantity
+\end{itemize}
+
+Supported Languages
+
+\begin{itemize}
+	\item English
+	\item Arabic
+	\item Czech
+	\item Chinese-Simplified
+	\item Chinese-Traditional
+	\item Danish
+	\item Dutch
+	\item Finnish
+	\item French
+	\item German
+	\item Hebrew
+	\item Hungarian
+	\item Italian
+	\item Japanese
+	\item Korean
+	\item Norwegian (Bokmål)
+	\item Polish
+	\item Portuguese (Portugal)
+	\item Portuguese (Brazil)
+	\item Russian
+	\item Spanish
+	\item Swedish
+	\item Turkish
+\end{itemize}
+
+Support of custom NER
+
+Custom NER model training can be done through  Azure Language Understanding (LUIS) service. This service is mostly designed for chat bots.
+
+Example of API:
+
+\begin{verbatimtab}[4]
+credential = AzureKeyCredential(api_key)
+client = TextAnalyticsClient(endpoint, 
+	credential)
+client.recognize_entities(documents,
+	 language="en")
+\end{verbatimtab}
+
+Other notes
+
+To run any of the Azure Text Analytics containers, you must have the host computer and container environments. There is a 5120 characters limitation on request size.  API supports both single document and batch modes.
+
 \section{Dataset and Analysis Methodology}
 
 This dataset is a document annotation dataset used to perform NER on resumes from indeed.com, which was obtained from https://www.kaggle.com/dataturks/resume-entities-for-ner/home.
 
+Universities as organization !!!
+
 
 \section{Results}
+
+Examples of TP
+
+Examples of FP
+
+Examples of FN
+
+Benefits of each of the tool
+
+\npdecimalsign{.}
+\nprounddigits{3}
+\begin{table}[htbp]
+\caption{Results (Person)}
+\begin{center}
+\begin{tabular}{|l|c|c|c|n{1}{3}|n{1}{3}|n{1}{3}|}
+\hline
+\textbf{NLP}&\multicolumn{6}{|c|}{\textbf{Person}}\\
+\cline{2-7} 
+\textbf{Tool}& \textbf{\textit{TP}}& \textbf{\textit{FP}}& \textbf{\textit{FN}} & \textbf{\textit{Precision}}& \textbf{\textit{Recall}}& \textbf{\textit{F1 Score}}\\
+\hline
+SpaCy & 184 & 470 & 34 &  0.28134556574923547 & 0.8440366972477065 & 0.42201834862385323\\
+Stanford & 57 & 268 & 161 &  0.1753846153846154 & 0.26146788990825687 & 0.2099447513812155\\
+Google & 69 & 2058 & 149 &  0.03244005641748942 & 0.3165137614678899 & 0.058848614072494664\\
+Amazon & 180 & 168 & 38 &  {\npboldmath}0.5172413793103449 & {\npboldmath}0.8256880733944955 & {\npboldmath}0.6360424028268551\\
+Microsoft & 68 & 122 & 150 &  0.35789473684210527 & 0.3119266055045872 & 0.3333333333333333\\
+\hline
+\end{tabular}
+\label{tab1}
+\end{center}
+\end{table}
+
+\begin{table}[htbp]
+\caption{Results (Organization)}
+\begin{center}
+\begin{tabular}{|l|c|c|c|n{1}{3}|n{1}{3}|n{1}{3}|}
+\hline
+\textbf{NLP}&\multicolumn{6}{|c|}{\textbf{Organization}}\\
+\cline{2-7} 
+\textbf{Tool}& \textbf{\textit{TP}}& \textbf{\textit{FP}}& \textbf{\textit{FN}} & \textbf{\textit{Precision}}& \textbf{\textit{Recall}}& \textbf{\textit{F1 Score}}\\
+\hline
+SpaCy & 157 & 6030 & 375 &  0.025375787942459996 & 0.2951127819548872 & 0.04673314481321625\\
+Stanford & 84 & 2169 & 448 &  0.037283621837549935 & 0.15789473684210525 & 0.06032315978456014\\
+Google & 165 & 3335 & 367 &  0.047142857142857146 & 0.3101503759398496 & 0.0818452380952381\\
+Amazon & 195 & 1979 & 337 &  {\npboldmath}0.08969641214351426 & {\npboldmath}0.36654135338345867 & {\npboldmath}0.14412416851441243\\
+Microsoft & 27 & 772 & 505 &  0.03379224030037547 & 0.05075187969924812 & 0.0405709992486852\\
+\hline
+\end{tabular}
+\label{tab1}
+\end{center}
+\end{table}
+
+
+\begin{table}[htbp]
+\caption{Results (Location)}
+\begin{center}
+\begin{tabular}{|l|c|c|c|n{1}{3}|n{1}{3}|n{1}{3}|}
+\hline
+\textbf{NLP}&\multicolumn{6}{|c|}{\textbf{Location}}\\
+\cline{2-7} 
+\textbf{Tool}& \textbf{\textit{TP}}& \textbf{\textit{FP}}& \textbf{\textit{FN}} & \textbf{\textit{Precision}}& \textbf{\textit{Recall}}& \textbf{\textit{F1 Score}}\\
+\hline
+SpaCy & 143 & 795 & 60 &  {\npboldmath}0.15245202558635396 & {\npboldmath}0.7044334975369458 & {\npboldmath}0.2506573181419807\\
+Stanford & 27 & 851 & 176 &  0.030751708428246014 & 0.1330049261083744 & 0.04995374653098982\\
+Google & 133 & 1478 & 70 &  0.08255741775294848 & 0.6551724137931034 & 0.1466372657111356\\
+Amazon & 44 & 978 & 159 &  0.043052837573385516 & 0.21674876847290642 & 0.07183673469387755\\
+Microsoft & 98 & 737 & 105 &  0.11736526946107785 & 0.4827586206896552 & 0.18882466281310212\\
+\hline
+\end{tabular}
+\label{tab1}
+\end{center}
+\end{table}
 
 \end{document}

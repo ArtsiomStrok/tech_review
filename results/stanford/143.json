@@ -1,1 +1,1 @@
-{"entities": [{"text": "Karan", "category": "PERSON"}, {"text": "Turkar", "category": "PERSON"}, {"text": "Balaghat", "category": "PERSON"}, {"text": "Madhya", "category": "LOCATION"}, {"text": "Pradesh", "category": "LOCATION"}, {"text": "Microsoft", "category": "ORGANIZATION"}, {"text": "Html", "category": "PERSON"}]}
+{"entities": [{"text": "Karan Turkar Balaghat", "category": "PERSON"}, {"text": "Madhya Pradesh", "category": "LOCATION"}, {"text": "Microsoft", "category": "ORGANIZATION"}, {"text": "Html", "category": "PERSON"}]}

@@ -1,1 +1,1 @@
-{"entities": [{"text": "Anand", "category": "PERSON"}, {"text": "S", "category": "PERSON"}, {"text": "Bangalore", "category": "PERSON"}, {"text": "Karnataka", "category": "LOCATION"}, {"text": "Microsoft", "category": "ORGANIZATION"}, {"text": "Vijaya", "category": "PERSON"}]}
+{"entities": [{"text": "Anand S Bangalore", "category": "PERSON"}, {"text": "Karnataka", "category": "LOCATION"}, {"text": "Microsoft", "category": "ORGANIZATION"}, {"text": "Vijaya", "category": "PERSON"}]}
