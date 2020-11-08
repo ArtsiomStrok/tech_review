@@ -83,7 +83,7 @@ Supported Languages
 
 Support of custom NER
 
-SpaCy has step by step guide how to improve existing model by adding your data and how to train the model for the new entity type.
+SpaCy has a step-by-step guide on improving the existing model by adding your data and how to train the model for the new entity type.
 
 Example of API:
 
@@ -94,7 +94,7 @@ classified_doc = nlp(doc)
 
 Other notes
 
-'O' class automatically filtered. The begin and end position of named entity is available.
+'O' - outside class automatically filtered. The beginning and end position of a named entity is available.
 
 \subsection{Stanford NER}
 
@@ -127,7 +127,7 @@ Supported Languages
 
 Support of custom NER
 
-The documentation for training your own classifier is somewhere between bad and non-existent. But nevertheless, everything you need is in the box, and you should look through the Javadoc for at least the classes CRFClassifier and NERFeatureFactory.
+The documentation for training your classifier is somewhere between bad and non-existent. Nevertheless, everything you need is in the box, and you should look through the Javadoc for at least the classes CRFClassifier and NERFeatureFactory.
 
 Example of API:
 
@@ -142,7 +142,7 @@ classified_doc = st.tag(tokenized_doc)
 
 Other notes
 
-The result is list of tuples for each token without scores. There is no out of the box chunking.
+The result is a list of tuples for each token without scores. There is no out of the box chunking.
 
 \subsection{Google Cloud Natural Language API}
 
@@ -185,7 +185,7 @@ Supported Languages
 
 Support of custom NER
 
-Google has AutoML Natural Language which allows end user to train custom NER model.
+Google has AutoML Natural Language, which allows the end-user to train the custom NER model.
 
 Example of API:
 
@@ -205,7 +205,7 @@ entities = response.entities
 
 Other notes
 
-Credentials can be easily exported from the web interface and imported to the client using JSON file. There is limitation on request size. 
+Credentials can be easily exported from the web interface and imported to the client using a JSON file. There is a limitation on the request size. 
 
 \subsection{Amazon Comprehend Text Analysis API}
 
@@ -244,7 +244,7 @@ Supported Languages
 
 Support of custom NER
 
-Amazon has Comprehend's custom entity recognition service to train custom NER model which is AutoML service similar to Google. The service automatically tests for the best algorithm and parameters while training the model to use, looking for the most accurate combination of these components.
+Amazon has Comprehend's custom entity recognition service to train the custom NER model. The service automatically tests for the best algorithm and parameters while training the model to use, looking for the most accurate combination of these components.
 
 Example of API:
 
@@ -257,7 +257,7 @@ comprehend.detect_entities(Text=documents,
 
 Other notes
 
-Comprehend client is automatically looking credentials  in the environment variables. There is a 5000 bytes limitation on request size.  API supports both single document and batch modes.
+Comprehend the client is automatically looking for credentials in the environment variables. There is a 5000 bytes limitation on the request size. API supports both single document and batch modes.
 
 \subsection{Microsoft Azure Text Analytics API}
 
@@ -313,7 +313,7 @@ Supported Languages
 
 Support of custom NER
 
-Custom NER model training can be done through  Azure Language Understanding (LUIS) service. This service is mostly designed for chat bots.
+Custom NER model training can be done through Azure Language Understanding (LUIS) service. This service is mostly designed for chatbots.
 
 Example of API:
 
@@ -327,13 +327,19 @@ client.recognize_entities(documents,
 
 Other notes
 
-To run any of the Azure Text Analytics containers, you must have the host computer and container environments. There is a 5120 characters limitation on request size.  API supports both single document and batch modes.
+To run any of the Azure Text Analytics containers, you must have the host computer and container environments. There is a 5120 character limitation on the request size. API supports both single document and batch modes.
 
 \section{Dataset and Analysis Methodology}
 
 This dataset is a document annotation dataset used to perform NER on resumes from indeed.com, which was obtained from https://www.kaggle.com/dataturks/resume-entities-for-ner/home.
 
-Universities as organization !!!
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=1\columnwidth]{images/resume_dataset.png}}
+\caption{Example of a tagged resume.}
+\label{fig1}
+\end{figure}
+
+I used the 'Name' tag as PERSON class, both 'College Name' and ' Companies worked at' as ORGANIZATION class and 'Location' as LOCATION class.
 
 
 \section{Results}
