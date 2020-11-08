@@ -9,6 +9,7 @@
 \usepackage{xcolor}
 \usepackage[boldmath]{numprint}
 \usepackage{moreverb}
+\usepackage{url}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
@@ -344,13 +345,7 @@ I used the 'Name' tag as PERSON class, both 'College Name' and ' Companies worke
 
 \section{Results}
 
-Examples of TP
-
-Examples of FP
-
-Examples of FN
-
-Benefits of each of the tool
+Amazon shows the best results for this dataset. Google has the smallest precision. It produces a lot of FP for the PERSON class due to the nature of the pre-build model.  It extracts values such as 'individual', 'user', 'player', 'member', 'client', 'librarian', 'subject matter expert', 'engineer' which can be useful in some cases e.g. chatbots. Also, in some cases, titles are additionally extracted with names e.g. 'Abhishek Jha Application Development Associate'. SpaCY and Stanford NER partially extract values or extract extra tokens, leading to additional FP and FN errors, affecting both precision and recall.
 
 \npdecimalsign{.}
 \nprounddigits{3}
@@ -374,6 +369,8 @@ Microsoft & 68 & 122 & 150 &  0.35789473684210527 & 0.3119266055045872 & 0.33333
 \end{center}
 \end{table}
 
+Overall the scores for all NLP toolkits are pretty low due to the nature of the data. Technologies listed in the resume were not labeled as ORGANIZATION however, technically, 'Microsoft, 'Cisco', 'Oracle', 'Apache' etc. are organizations. That's why we see a lot of FP errors. All models struggle to identify value boundaries correctly. Amazon is showing the best results again. Google has the same issues as with PERSON. It extracts values such as 'company', 'school', 'organization'.
+
 \begin{table}[htbp]
 \caption{Results (Organization)}
 \begin{center}
@@ -393,6 +390,8 @@ Microsoft & 27 & 772 & 505 &  0.03379224030037547 & 0.05075187969924812 & 0.0405
 \label{tab1}
 \end{center}
 \end{table}
+
+Manual analysis of the model errors showed good results. Most of the FP errors were actual locations, but they were not labeled for this task. SpaCy showed the best results for the LOCATION class for this dataset. A lot of FP errors Google again extracts values such as 'region', 'center', 'site', 'floor', 'area', 'shop'.p Only opensource models produced errors such as labeling 'Java' as a location.
 
 
 \begin{table}[htbp]
@@ -414,5 +413,7 @@ Microsoft & 98 & 737 & 105 &  0.11736526946107785 & 0.4827586206896552 & 0.18882
 \label{tab1}
 \end{center}
 \end{table}
+
+You can find the source code and results here \url{https://github.com/ArtsiomStrok/tech_review}.
 
 \end{document}
